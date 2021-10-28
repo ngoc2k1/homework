@@ -1,7 +1,7 @@
 package com.ngoc.draft.animals;
 
-public interface SnakeAction {
+public interface Molt {
     void molt(); //trườn
 
-    void crawl(); //lột xác
+
 }

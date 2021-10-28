@@ -1,13 +1,14 @@
 package com.ngoc.draft.animals;
 
-public class Dog extends Animal implements DogAction, JumpAction {
-
+public class Dog extends Animal implements Bark, Jump {
     public Dog() {
     }
-
+    static int b=5;
+    int a=-5;
     public Dog(int size) {
         super(size, "Green", "Lee");
     }
+
 
     @Override
     public void introduce() {

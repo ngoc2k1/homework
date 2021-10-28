@@ -1,5 +1,5 @@
 package com.ngoc.draft.animals;
 
-public interface BirdAction {
+public interface Fly {
     void fly();
 }

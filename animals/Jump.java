@@ -1,5 +1,5 @@
 package com.ngoc.draft.animals;
 
-public interface JumpAction {
+public interface Jump {
     void jump();
 }

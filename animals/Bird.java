@@ -1,6 +1,6 @@
 package com.ngoc.draft.animals;
 
-public class Bird extends Animal implements BirdAction, JumpAction {
+public class Bird extends Animal implements Fly, Jump {
 
     @Override
     public void eat() {
