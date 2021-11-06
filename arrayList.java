@@ -1,8 +1,8 @@
-package com.ngoc.aibles.arrayHanding;
+package com.ngoc.java8;
 
 import java.util.Scanner;
 
-public class arrayList {
+public class ArrayList {
     public static void main(String[] args) {
         Integer[] a = new Integer[10];
         Scanner input = new Scanner(System.in);
@@ -45,5 +45,4 @@ public class arrayList {
             System.out.print(a[i] * 2 + " ");
         }
     }
-
 }
