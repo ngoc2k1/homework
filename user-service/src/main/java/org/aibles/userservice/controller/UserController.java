@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -15,41 +16,53 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/get-id{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable("id") int id) {
         User user = userService.getUserById(id);
-        if (user != null) return ResponseEntity.ok(user);
-        return new ResponseEntity<>("User isn't exist. Please try again with other Id", HttpStatus.NOT_FOUND);
+        if (user != null) return new ResponseEntity<>(user, HttpStatus.OK);
+        else return new ResponseEntity<>("User doesn't exist. Please try again with other Id", HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/get-list-users")
-    public ResponseEntity<?> getListUsers() {
-        List<User> result = userService.getListUsers();
+    @GetMapping()
+    public ResponseEntity<?> getUsers() {
+        List<User> result = userService.getAllUsers();
         return ResponseEntity.ok(result);
     }
-    @PostMapping("/create-user")
-    public ResponseEntity<?> createUser(@RequestBody User user){
-        User newUser= userService.getUserById(user.getId());
-        if(newUser!=null)
-            return new ResponseEntity<>("User is exist. Please try again with other Id", HttpStatus.NOT_ACCEPTABLE);
+
+    @PostMapping() //cứ call post là 200-201, k truyền ID lên, tự gen
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        User createdUser = userService.getUserById(user.getId());
         userService.createUser(user);
-        return ResponseEntity.ok(user);
+        return new ResponseEntity<>(createdUser, HttpStatus.OK);
+
+        //return ResponseEntity.ok(user);
+        //return ResponseEntity.status(HttpStatus.OK).body(user);
+
     }
-    @PutMapping("/update-user")
-    public ResponseEntity<?> updateUser(@RequestBody User user){
-        userService.updateUser(user);
-        return ResponseEntity.ok(user);
+
+    @PutMapping("/{id}")//truyền ID lên backend -> vào db để check[tồn tại 200, k tồn tại 404 not found], còn 400??
+    public ResponseEntity<?> updateUser(@PathVariable("id") int id, @RequestBody User userUpdated) {
+        User user = userService.getUserById(id);
+        if (user == null) {
+            return new ResponseEntity<>("Id doesn't exist in list", HttpStatus.BAD_REQUEST);
+        } else {
+            if (user.getId() == userUpdated.getId()) {
+                userService.updateUser(userUpdated, userUpdated.getId());
+                return new ResponseEntity<>(userUpdated, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("ID doesn't match with the ID on the path. Please try again with other Id.", HttpStatus.NOT_FOUND);
+            }
+        }
     }
-    @DeleteMapping("/delete-id{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable ("id")int id){
-        User deleteUser=userService.getUserById(id);
-        if(deleteUser==null) return new ResponseEntity<>("User isn't exist. Please try again with other Id", HttpStatus.NOT_FOUND);
-        userService.deleteUserById(id);
-        return ResponseEntity.ok(deleteUser);
-    }
-    @DeleteMapping("/delete-list-users")
-    public ResponseEntity<?> deleteListUsers(){
-        userService.deleteListUsers();
-        return new ResponseEntity<>("Delete succeeds", HttpStatus.OK);
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
+        User deleteUser = userService.getUserById(id);
+        if (deleteUser == null)
+            return new ResponseEntity<>("User doesn't exist. Please try again with other Id", HttpStatus.NOT_FOUND);
+        else {
+            userService.deleteUserById(id);
+            return new ResponseEntity<>(deleteUser, HttpStatus.OK);
+        }
     }
 }

@@ -6,8 +6,12 @@ import org.aibles.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserServiceIml implements UserService {
@@ -19,7 +23,7 @@ public class UserServiceIml implements UserService {
     }
 
     @Override
-    public List<User> getListUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -31,13 +35,13 @@ public class UserServiceIml implements UserService {
 
     @Override
     public User createUser(User user) {
-        User newUser=userRepository.save(user);
+        User newUser = userRepository.save(user);
         return newUser;
     }
 
     @Override
-    public User updateUser(User user) {
-        User updateUser=userRepository.save(user);
+    public User updateUser(User user,int id) {
+        User updateUser = userRepository.save(user);
         return updateUser;
     }
 
@@ -47,8 +51,8 @@ public class UserServiceIml implements UserService {
     }
 
     @Override
-    public void deleteListUsers() {
-        userRepository.deleteAll();
+    public User partialUpdateAge(User user, int id) {
+        return null;
     }
 }
 

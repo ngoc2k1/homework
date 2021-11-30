@@ -6,15 +6,15 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserService {
-    List<User> getListUsers();
+    List<User> getAllUsers();
 
     User getUserById(int id);
 
     User createUser(User user);
 
-    User updateUser(User user);
+    User updateUser(User user, int id);
 
     void deleteUserById(int id);
 
-    void deleteListUsers();
+    User partialUpdateAge(User user,int id);
 }
