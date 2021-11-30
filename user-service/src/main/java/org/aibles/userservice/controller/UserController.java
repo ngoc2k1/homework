@@ -29,10 +29,9 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping() //cứ call post là 200-201, k truyền ID lên, tự gen
+    @PostMapping() //cứ call post là 200-201
     public ResponseEntity<?> createUser(@RequestBody User user) {
-        User createdUser = userService.getUserById(user.getId());
-        userService.createUser(user);
+        User createdUser = userService.createUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.OK);
 
         //return ResponseEntity.ok(user);
