@@ -20,7 +20,7 @@ public class UserController {
     public ResponseEntity<?> getUserById(@PathVariable("id") int id) {
         User user = userService.getUserById(id);
         if (user != null) return new ResponseEntity<>(user, HttpStatus.OK);
-        else return new ResponseEntity<>("User doesn't exist. Please try again with other Id", HttpStatus.NOT_FOUND);
+        else return new ResponseEntity<>("ID not found. Please try again with other Id.", HttpStatus.NOT_FOUND);
     }
 
     @GetMapping()
@@ -43,13 +43,13 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable("id") int id, @RequestBody User userUpdated) {
         User user = userService.getUserById(id);
         if (user == null) {
-            return new ResponseEntity<>("Id doesn't exist in list", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Check again input", HttpStatus.BAD_REQUEST);
         } else {
             if (user.getId() == userUpdated.getId()) {
                 userService.updateUser(userUpdated, userUpdated.getId());
                 return new ResponseEntity<>(userUpdated, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("ID doesn't match with the ID on the path. Please try again with other Id.", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("ID not found. Please try again with other Id.", HttpStatus.NOT_FOUND);
             }
         }
     }
@@ -58,7 +58,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
         User deleteUser = userService.getUserById(id);
         if (deleteUser == null)
-            return new ResponseEntity<>("User doesn't exist. Please try again with other Id", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("ID not found. Please try again with other Id.", HttpStatus.NOT_FOUND);
         else {
             userService.deleteUserById(id);
             return new ResponseEntity<>(deleteUser, HttpStatus.OK);
